@@ -9,39 +9,69 @@ public class SnakeAndLadder {
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Snake And Ladder Game\n");
-		int diceCount=0;
-		int playerPosition = START_POSITION;
-		System.out.println("Player starts at position: " + playerPosition);
+		int playerPosition1 = START_POSITION;
+		int playerPosition2 = START_POSITION;
+		int diceRollsPlayer1=0;
+		int diceRollsPlayer2=0;
+		System.out.println("Player1 starts at position: " + playerPosition1);
 		Random random = new Random();
-		while (playerPosition < WINNING_POSITION) {
-			int dieRoll = random.nextInt(6) + 1;
-			diceCount++;
-			System.out.println("Player rolls the die and gets: " + dieRoll + " Dice count "+diceCount);
+		boolean player1Turn=true;
+		while (playerPosition1 < WINNING_POSITION && playerPosition2 < WINNING_POSITION) {
+		 if(player1Turn) {
+			 System.out.println("Player1 turn");
+			 diceRollsPlayer1++;
+			 playerPosition1 = turn(playerPosition1,random,"Player 1");
+			 if(playerPosition1==WINNING_POSITION)
+				 break;
+		 }else {
+			 System.out.println("Player2 turn");
+			 diceRollsPlayer2++;
+			 playerPosition1 = turn(playerPosition1,random,"Player 2");
+			 if(playerPosition2==WINNING_POSITION)
+				 break;
+		 }
+		 player1Turn=!player1Turn;
+			
+		}
+		if(playerPosition1==WINNING_POSITION) {
+			System.out.println("Player1 win game");
+		}else {
+			System.out.println("Player2 win game");
 
-			int option = random.nextInt(3);
-			switch (option) {
-			case NO_PLAY:
-				System.out.println("Player Stays In Same Position");
-				break;
-			case LADDER:
-				System.out.println("Player Moves Ahead by " + dieRoll);
-				if(playerPosition + dieRoll<=WINNING_POSITION) {
-				playerPosition += dieRoll;
-				}else {
-					System.out.println("Players cannot exceed position 100 "+playerPosition);
-				}
-				break;
-			case SNAKE:
-				System.out.println("Player Fall Down by " + dieRoll);
-				playerPosition -= dieRoll;
-				if (playerPosition < 0)
-					playerPosition = 0;
-				break;
-			}
-			System.out.println("Player Current Position " + playerPosition);
 		}
         System.out.println("\nCongratulations! Player reached the winning position: " + WINNING_POSITION);
-        System.out.println("Total Dice Count To Winning :"+diceCount);
+        System.out.println("Total Dice Count Player1 :"+diceRollsPlayer1);
+        System.out.println("Total Dice Count Player2 :"+diceRollsPlayer2);
 
+	}
+	
+	private static int turn(int position,Random random,String playerName) {
+		int dieRoll = random.nextInt(6) + 1;
+		System.out.println(playerName +" Player rolls the die and gets: " + dieRoll );
+
+		int option = random.nextInt(3);
+		switch (option) {
+		case NO_PLAY:
+			System.out.println(playerName +" Player Stays In Same Position "+position);
+			break;
+		case LADDER:
+			System.out.println(playerName +" Player Moves Ahead by " + dieRoll+" position "+position);
+			if(position + dieRoll<=WINNING_POSITION) {
+			position += dieRoll;
+			}else {
+				System.out.println(playerName +" Player cannot exceed position 100 "+position);
+			}
+			System.out.println(playerName +" Gets another turn");
+			position=turn(position, random, playerName);
+			break;
+		case SNAKE:
+			System.out.println(playerName +" Player Fall Down by " + dieRoll+" position "+position);
+			position -= dieRoll;
+			if (position < 0)
+				position = 0;
+			break;
+		}
+		System.out.println(playerName +" Player Current Position " + position);
+		return position;
 	}
 }
