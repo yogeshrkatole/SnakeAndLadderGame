@@ -23,7 +23,11 @@ public class SnakeAndLadder {
 				break;
 			case LADDER:
 				System.out.println("Player Moves Ahead by " + dieRoll);
+				if(playerPosition + dieRoll<=WINNING_POSITION) {
 				playerPosition += dieRoll;
+				}else {
+					System.out.println("Players cannot exceed position 100 "+playerPosition);
+				}
 				break;
 			case SNAKE:
 				System.out.println("Player Fall Down by " + dieRoll);
